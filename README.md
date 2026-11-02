@@ -2,7 +2,7 @@
 
 A professional, production-oriented web application for planning, assigning and tracking team work. TaskFlow is being built as the **Hairdrama Tech internship assignment**, one phase at a time, on a clean monorepo foundation.
 
-> **Status: Phase 1 complete (Project Initialization).** This repository currently contains the monorepo skeleton: a Next.js frontend, a Flask REST API, test tooling and documentation. Features such as authentication, database persistence and email are intentionally **not** implemented yet — they belong to future phases.
+> **Status: Phase 2 complete (Professional UI/UX).** This repository contains the monorepo foundation from Phase 1 plus the full Phase 2 dashboard frontend: sidebar/top-nav shell, dashboard, task list & Kanban views, task details, team, notifications and settings pages, all backed by isolated sample data. Authentication, database persistence and email remain intentionally **not** implemented — they belong to future phases.
 
 ---
 
@@ -17,6 +17,14 @@ TaskFlow gives teams a single place to organize work: create tasks, assign them 
 - A modular Flask REST API with an application factory, CORS, JSON error handling and a `/api/health` endpoint.
 - Automated backend tests (pytest) and frontend linting/type-checking.
 - Environment templates, `.gitignore` and this README.
+
+**Phase 2 delivers:**
+
+- A premium SaaS dashboard shell: left sidebar (navigation, active indicators, profile), top bar (title, breadcrumbs, search, notifications, avatar menu, Create Task).
+- Pages: dashboard overview, tasks (list ⇄ Kanban, search, status/priority filters, due-date sorting), task details with activity timeline, team roster, notifications feed and settings.
+- Reusable component library (`components/ui`) plus feature components for tasks, team, notifications and settings.
+- A client-side demo store (React context + reducer) seeded with realistic sample data and mirrored to `localStorage` — deliberately isolated so Phase 3 can swap in REST calls without touching the UI.
+- Frontend-only task creation/editing with form validation, status updates, completion and notification interactions.
 
 ---
 
@@ -93,16 +101,24 @@ flowchart LR
 ```text
 taskflow-team-management/
 ├── frontend/                      # Next.js 16 application
-│   ├── app/                       # App Router: layout, page, global styles
+│   ├── app/                       # App Router: root layout, global styles
 │   │   ├── globals.css            # Tailwind 4 theme tokens + base styles
-│   │   ├── layout.tsx             # Root layout (fonts, header, footer)
-│   │   └── page.tsx               # Phase 1 landing/dashboard placeholder
+│   │   ├── layout.tsx             # Root layout (fonts, metadata)
+│   │   └── (dashboard)/           # Dashboard route group + shell layout
+│   │       ├── page.tsx           # Overview (summary cards + sections)
+│   │       ├── tasks/             # My/Assigned/Created/Completed + [id]
+│   │       ├── team/              # Team members
+│   │       ├── notifications/     # Notification feed
+│   │       └── settings/          # Settings sections
 │   ├── components/                # Reusable UI
-│   │   ├── dashboard/             # Feature-specific composites (api-status)
-│   │   ├── layout/                # site-header, site-footer
-│   │   └── ui/                    # button, card, logo
+│   │   ├── dashboard/             # Dashboard sections + api-status
+│   │   ├── layout/                # sidebar, dashboard-header, dashboard-shell
+│   │   ├── providers/             # demo-data-provider (demo store)
+│   │   ├── tasks/                 # task card/table/kanban/modal/details
+│   │   ├── team/ · notifications/ · settings/   # Feature views
+│   │   └── ui/                    # button, card, modal, badges, form controls
 │   ├── hooks/                     # React hooks (use-api-health)
-│   ├── lib/                       # Shared utilities (api client)
+│   ├── lib/                       # Utilities: api client, demo seed/store, queries, formatting
 │   ├── types/                     # Shared TypeScript contracts
 │   ├── public/                    # Static assets
 │   ├── .env.example               # Frontend environment template
@@ -222,7 +238,7 @@ cd frontend
 npm run dev
 ```
 
-Then open **http://localhost:3000**. The dashboard placeholder shows a live *Backend connection* card that calls `GET /api/health` — it should read **API online**.
+Then open **http://localhost:3000**. The dashboard loads the Phase 2 demo workspace (sample tasks, team and notifications). The live *Backend connection* card that calls `GET /api/health` now lives under **Settings → System** and should read **API online** when the backend is running.
 
 **Other commands**
 
@@ -286,8 +302,8 @@ curl http://localhost:5000/api/health
 | Phase | Scope | Status |
 | --- | --- | --- |
 | **Phase 1** | Project initialization: monorepo, frontend, Flask API, health endpoint, tests, docs | ✅ Complete |
-| **Phase 2** | Core task/team features and **Google OAuth 2.0** authentication | ⬜ Planned |
-| **Phase 3** | **Supabase PostgreSQL** integration: schema, migrations, CRUD | ⬜ Planned |
+| **Phase 2** | Professional UI/UX: full dashboard frontend on sample data (no backend changes) | ✅ Complete |
+| **Phase 3** | Backend integration: **Supabase PostgreSQL** CRUD, **Google OAuth 2.0** | ⬜ Planned |
 | **Phase 4** | **Gmail API** notifications | ⬜ Planned |
 | **Phase 5** | Deployment: **Vercel** (frontend) + **Render** (backend) | ⬜ Planned |
 
