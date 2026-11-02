@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+/*
+ * TaskFlow global styles.
+ *
+ * Tailwind CSS v4 is CSS-first: theme tokens live in @theme blocks, become CSS
+ * custom properties, and automatically generate utility classes
+ * (e.g. --color-brand-600 -> bg-brand-600 / text-brand-600).
+ *
+ * Design direction: a light, professional SaaS surface with subtle blue
+ * accents, generous spacing and readable typography.
+ */
+
+@theme {
+  /* Brand palette (blue accent) used for actions, links and highlights. */
+  --color-brand-50: #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-200: #bfdbfe;
+  --color-brand-300: #93c5fd;
+  --color-brand-400: #60a5fa;
+  --color-brand-500: #3b82f6;
+  --color-brand-600: #2563eb;
+  --color-brand-700: #1d4ed8;
+
+  /* Semantic surfaces and text. */
+  --color-canvas: #f8fafc;
+  --color-surface: #ffffff;
+  --color-line: #e2e8f0;
+  --color-ink: #0f172a;
+  --color-muted: #64748b;
+}
+
+/*
+ * Fonts are loaded and hashed by next/font at build time; their CSS variables
+ * are injected on <html>, so the theme must inline them instead of resolving
+ * var() lazily.
+ */
+@theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  /*
+   * Tailwind v4 defaults `border-color` to currentColor. Reset it to a neutral
+   * line color so plain `border` utilities keep a consistent, subtle look.
+   */
+  *,
+  ::before,
+  ::after {
+    border-color: var(--color-line);
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    /* next/font exposes --font-geist-sans on <html>; fall back gracefully. */
+    font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-brand-100);
+    color: var(--color-brand-700);
+  }
+}
